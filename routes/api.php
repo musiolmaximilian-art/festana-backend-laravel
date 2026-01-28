@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GiftController;
+use App\Http\Controllers\PublicRsvpController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/public/events/{website_name}', [EventController::class, 'publicShow']);
 Route::get('/public/events/{website_name}/gifts', [GiftController::class, 'publicIndex']);
+Route::post('/public/rsvp', [PublicRsvpController::class, 'store'])->middleware('throttle:public-rsvp');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/events', [EventController::class, 'index']);
@@ -44,4 +46,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events/{eventId}/guests', [GuestController::class, 'store']);
     Route::patch('/guests/{id}', [GuestController::class, 'update']);
     Route::delete('/guests/{id}', [GuestController::class, 'destroy']);
+    Route::post('/guests/{id}/invite-token', [GuestController::class, 'regenerateInviteToken']);
 });

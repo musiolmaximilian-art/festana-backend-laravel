@@ -198,6 +198,39 @@ curl -X DELETE http://localhost:8000/api/gifts/1 \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
+## Guests
+
+Create a guest:
+```bash
+curl -X POST http://localhost:8000/api/events/1/guests \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "first_name": "Jamie",
+    "last_name": "Lee",
+    "email": "jamie@example.com"
+  }'
+```
+
+Generate (or re-generate) a guest invite token (token is returned once):
+```bash
+curl -X POST http://localhost:8000/api/guests/1/invite-token \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Public RSVP submission (no auth):
+```bash
+curl -X POST http://localhost:8000/api/public/rsvp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "token": "INVITE_TOKEN",
+    "attendance_status": "attending",
+    "has_plus_one": true,
+    "dietary_restrictions": "Vegetarian",
+    "preferred_meal": "Pasta"
+  }'
+```
+
 ## Guests (Private Dashboard)
 
 List guests for an event:

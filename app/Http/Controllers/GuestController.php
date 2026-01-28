@@ -67,6 +67,17 @@ class GuestController extends Controller
         return response()->noContent();
     }
 
+    public function regenerateInviteToken(Request $request, int $id)
+    {
+        $guest = Guest::whereHas('event', function ($query) use ($request) {
+            $query->where('owner_id', $request->user()->id);
+        })->findOrFail($id);
+
+        $token = $guest->regenerateInvitationToken();
+
+        return response()->json(['token' => $token]);
+    }
+
     private function validateGuest(Request $request, ?Guest $guest = null): array
     {
         $requiredRule = $guest ? 'sometimes' : 'required';
@@ -83,7 +94,6 @@ class GuestController extends Controller
             'preferred_meal' => ['sometimes', 'nullable', 'string', 'max:255'],
             'attendance_status' => ['sometimes', 'string', Rule::in(['invited', 'attending', 'declined', 'unknown'])],
             'notes' => ['sometimes', 'nullable', 'string'],
-            'invitation_token_hash' => ['sometimes', 'nullable', 'string', 'max:255'],
         ]);
     }
 }

@@ -153,10 +153,39 @@ class EventTest extends TestCase
 
         $this->getJson('/api/public/events/'.$event->website_name)
             ->assertOk()
-            ->assertJsonFragment([
-                'id' => $event->id,
-                'website_name' => 'public-site',
-            ]);
+            ->assertJsonPath('event.website_name', 'public-site');
+    }
+
+    public function test_public_show_returns_visible_gifts_for_public_event(): void
+    {
+        $event = Event::factory()->public()->create([
+            'website_name' => 'public-gifts',
+        ]);
+
+        $secondGift = \App\Models\Gift::factory()->create([
+            'event_id' => $event->id,
+            'title' => 'Second Gift',
+            'sort_order' => 2,
+            'is_visible' => true,
+        ]);
+        $firstGift = \App\Models\Gift::factory()->create([
+            'event_id' => $event->id,
+            'title' => 'First Gift',
+            'sort_order' => 1,
+            'is_visible' => true,
+        ]);
+        \App\Models\Gift::factory()->hidden()->create([
+            'event_id' => $event->id,
+        ]);
+
+        $response = $this->getJson('/api/public/events/'.$event->website_name);
+
+        $response->assertOk()
+            ->assertJsonPath('event.website_name', 'public-gifts')
+            ->assertJsonCount(2, 'gifts');
+
+        $this->assertSame($firstGift->id, $response->json('gifts.0.id'));
+        $this->assertSame($secondGift->id, $response->json('gifts.1.id'));
     }
 
     private function withAuthToken(User $user)

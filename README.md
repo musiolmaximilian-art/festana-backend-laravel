@@ -130,6 +130,30 @@ Public event (only when `is_public` is true):
 ```bash
 curl http://localhost:8000/api/public/events/festana-wedding
 ```
+Example response:
+```json
+{
+  "event": {
+    "id": 1,
+    "website_name": "festana-wedding",
+    "title": "Festana Wedding",
+    "wedding_date": "2030-06-01",
+    "timezone": "Europe/Berlin"
+  },
+  "gifts": [
+    {
+      "id": 10,
+      "title": "Stainless Steel Toaster",
+      "description": "A two-slice toaster for the kitchen",
+      "price_cents": 4500,
+      "currency": "EUR",
+      "sort_order": 1,
+      "is_cash_gift": false,
+      "image_url": "https://example.com/toaster.png"
+    }
+  ]
+}
+```
 
 ## Gifts (Registry Items)
 

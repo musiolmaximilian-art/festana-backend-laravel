@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use App\Models\Gift;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -65,7 +66,44 @@ class EventController extends Controller
             ->where('public_settings->is_public', true)
             ->firstOrFail();
 
-        return response()->json($event);
+        $gifts = $event->gifts()
+            ->where('is_visible', true)
+            ->orderBy('sort_order')
+            ->orderBy('id')
+            ->get()
+            ->map(function ($gift) {
+                return $this->formatPublicGift($gift);
+            });
+
+        return response()->json([
+            'event' => $this->formatPublicEvent($event),
+            'gifts' => $gifts,
+        ]);
+    }
+
+    private function formatPublicEvent(Event $event): array
+    {
+        return [
+            'id' => $event->id,
+            'website_name' => $event->website_name,
+            'title' => $event->title,
+            'wedding_date' => $event->wedding_date?->toDateString(),
+            'timezone' => $event->timezone,
+        ];
+    }
+
+    private function formatPublicGift(Gift $gift): array
+    {
+        return [
+            'id' => $gift->id,
+            'title' => $gift->title,
+            'description' => $gift->description,
+            'price_cents' => $gift->price_cents,
+            'currency' => $gift->currency,
+            'sort_order' => $gift->sort_order,
+            'is_cash_gift' => $gift->is_cash_gift,
+            'image_url' => $gift->image_url,
+        ];
     }
 
     private function validateEvent(Request $request, ?Event $event = null): array

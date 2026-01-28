@@ -5,6 +5,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\PublicRsvpController;
+use App\Http\Controllers\StripeController;
+use App\Http\Controllers\StripeWebhookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +32,8 @@ Route::get('/public/events/{website_name}', [EventController::class, 'publicShow
 Route::get('/public/events/{website_name}/gifts', [GiftController::class, 'publicIndex']);
 Route::post('/public/rsvp', [PublicRsvpController::class, 'store'])->middleware('throttle:public-rsvp');
 
+Route::post('/stripe/webhook', StripeWebhookController::class);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/events', [EventController::class, 'index']);
     Route::post('/events', [EventController::class, 'store']);
@@ -47,4 +51,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/guests/{id}', [GuestController::class, 'update']);
     Route::delete('/guests/{id}', [GuestController::class, 'destroy']);
     Route::post('/guests/{id}/invite-token', [GuestController::class, 'regenerateInviteToken']);
+
+    Route::post('/events/{eventId}/stripe/onboarding-link', [StripeController::class, 'createOnboardingLink']);
+    Route::post('/events/{eventId}/stripe/dashboard-link', [StripeController::class, 'createDashboardLink']);
+    Route::get('/events/{eventId}/stripe/status', [StripeController::class, 'status']);
 });

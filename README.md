@@ -51,3 +51,31 @@ The health check endpoint is available at `GET /api/health` and returns:
 ```json
 { "status": "ok" }
 ```
+
+## Authentication (Sanctum)
+
+Register:
+```bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Festana User","email":"user@example.com","password":"password123"}'
+```
+
+Login:
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"user@example.com","password":"password123"}'
+```
+
+Current user:
+```bash
+curl http://localhost:8000/api/auth/me \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Logout:
+```bash
+curl -X POST http://localhost:8000/api/auth/logout \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```

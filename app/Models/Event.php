@@ -16,6 +16,8 @@ class Event extends Model
         'wedding_date',
         'timezone',
         'public_settings',
+        'stripe_account_id',
+        'stripe_account_status',
     ];
 
     protected function casts(): array

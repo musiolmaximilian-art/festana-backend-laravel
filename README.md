@@ -79,3 +79,54 @@ Logout:
 curl -X POST http://localhost:8000/api/auth/logout \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
+
+## Events
+
+List events:
+```bash
+curl http://localhost:8000/api/events \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Create an event:
+```bash
+curl -X POST http://localhost:8000/api/events \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "website_name": "festana-wedding",
+    "title": "Festana Wedding",
+    "wedding_date": "2030-06-01",
+    "timezone": "Europe/Berlin",
+    "public_settings": { "is_public": false }
+  }'
+```
+
+Show an event:
+```bash
+curl http://localhost:8000/api/events/1 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Update an event:
+```bash
+curl -X PATCH http://localhost:8000/api/events/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "website_name": "festana-wedding",
+    "title": "Updated Wedding Title",
+    "public_settings": { "is_public": true }
+  }'
+```
+
+Delete an event:
+```bash
+curl -X DELETE http://localhost:8000/api/events/1 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Public event (only when `is_public` is true):
+```bash
+curl http://localhost:8000/api/public/events/festana-wedding
+```

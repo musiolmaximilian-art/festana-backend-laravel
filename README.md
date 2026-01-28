@@ -198,6 +198,62 @@ curl -X DELETE http://localhost:8000/api/gifts/1 \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
+## Guests (Private Dashboard)
+
+List guests for an event:
+```bash
+curl http://localhost:8000/api/events/1/guests \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Filter guests by attendance status:
+```bash
+curl "http://localhost:8000/api/events/1/guests?attendance_status=attending" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Search guests by name or email:
+```bash
+curl "http://localhost:8000/api/events/1/guests?q=alex" \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Create a guest:
+```bash
+curl -X POST http://localhost:8000/api/events/1/guests \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "first_name": "Alex",
+    "last_name": "Johnson",
+    "email": "alex@example.com",
+    "phone": "+123456789",
+    "tags": ["family", "vip"],
+    "has_plus_one": true,
+    "dietary_restrictions": "Vegetarian",
+    "preferred_meal": "Pasta",
+    "attendance_status": "invited",
+    "notes": "Prefers aisle seat"
+  }'
+```
+
+Update a guest:
+```bash
+curl -X PATCH http://localhost:8000/api/guests/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "attendance_status": "attending",
+    "notes": "Confirmed with plus one"
+  }'
+```
+
+Delete a guest:
+```bash
+curl -X DELETE http://localhost:8000/api/guests/1 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
 Public gifts (only when event is public and gifts are visible):
 ```bash
 curl http://localhost:8000/api/public/events/festana-wedding/gifts

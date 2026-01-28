@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\GiftController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/events/{eventId}/gifts', [GiftController::class, 'store']);
     Route::patch('/gifts/{id}', [GiftController::class, 'update']);
     Route::delete('/gifts/{id}', [GiftController::class, 'destroy']);
+
+    Route::get('/events/{eventId}/guests', [GuestController::class, 'index']);
+    Route::post('/events/{eventId}/guests', [GuestController::class, 'store']);
+    Route::patch('/guests/{id}', [GuestController::class, 'update']);
+    Route::delete('/guests/{id}', [GuestController::class, 'destroy']);
 });

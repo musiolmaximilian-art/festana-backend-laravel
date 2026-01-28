@@ -35,4 +35,9 @@ class Event extends Model
     {
         return $this->hasMany(Gift::class);
     }
+
+    public function guests()
+    {
+        return $this->hasMany(Guest::class);
+    }
 }

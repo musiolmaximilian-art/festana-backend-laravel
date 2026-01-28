@@ -30,4 +30,9 @@ class Event extends Model
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
+
+    public function gifts()
+    {
+        return $this->hasMany(Gift::class);
+    }
 }

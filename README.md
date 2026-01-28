@@ -130,3 +130,51 @@ Public event (only when `is_public` is true):
 ```bash
 curl http://localhost:8000/api/public/events/festana-wedding
 ```
+
+## Gifts (Registry Items)
+
+List gifts for an event:
+```bash
+curl http://localhost:8000/api/events/1/gifts \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Create a gift:
+```bash
+curl -X POST http://localhost:8000/api/events/1/gifts \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "title": "Stainless Steel Toaster",
+    "description": "A two-slice toaster for the kitchen",
+    "price_cents": 4500,
+    "currency": "EUR",
+    "is_visible": true,
+    "sort_order": 1,
+    "is_cash_gift": false,
+    "image_url": "https://example.com/toaster.png"
+  }'
+```
+
+Update a gift:
+```bash
+curl -X PATCH http://localhost:8000/api/gifts/1 \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "title": "Updated Toaster",
+    "is_visible": false,
+    "price_cents": null
+  }'
+```
+
+Delete a gift:
+```bash
+curl -X DELETE http://localhost:8000/api/gifts/1 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Public gifts (only when event is public and gifts are visible):
+```bash
+curl http://localhost:8000/api/public/events/festana-wedding/gifts
+```
